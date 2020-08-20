@@ -68,6 +68,14 @@ class toplevel:
         self.Label1.configure(foreground="#000000")
         self.Label1.configure(text='''Mini Instagram''')
 
+        self.Label_u = tk.Label(self.Lframe)
+        self.Label_u.place(relx=0.116, rely=0.338, height=22, relwidth=0.180)
+        self.Label_u.configure(background="#f8f6f6")
+        self.Label_u.configure(disabledforeground="#a3a3a3")
+        self.Label_u.configure(font=font10)
+        self.Label_u.configure(foreground="#888787")
+        self.Label_u.configure(text="username")
+
         self.username = tk.StringVar()
         self.Entry1 = tk.Entry(self.Lframe)
         self.Entry1.place(relx=0.116, rely=0.379,height=40, relwidth=0.753)
@@ -75,19 +83,27 @@ class toplevel:
         self.Entry1.configure(disabledforeground="#a3a3a3")
         self.Entry1.configure(font="TkFixedFont")
         self.Entry1.insert(0,"Username")
-        # self.Entry1.configure(textvariable=self.username)
+        self.Entry1.configure(textvariable=self.username)
         self.Entry1.bind("<FocusIn>",lambda event: self.Entry1.delete(0, tk.END))
         self.Entry1.configure(foreground="#000000")
         self.Entry1.configure(insertbackground="black")
+        
+        self.Label_p = tk.Label(self.Lframe)
+        self.Label_p.place(relx=0.116, rely=0.485, height=22, relwidth=0.180)
+        self.Label_p.configure(background="#f8f6f6")
+        self.Label_p.configure(disabledforeground="#a3a3a3")
+        self.Label_p.configure(font=font10)
+        self.Label_p.configure(foreground="#888787")
+        self.Label_p.configure(text="password")
 
         self.password = tk.StringVar()
         self.Entry2 = tk.Entry(self.Lframe,show="*")
-        self.Entry2.place(relx=0.116, rely=0.5,height=40, relwidth=0.753)
+        self.Entry2.place(relx=0.116, rely=0.526,height=40, relwidth=0.753)
         self.Entry2.configure(background="#e8e8e8")
         self.Entry2.configure(disabledforeground="#a3a3a3")
         self.Entry2.configure(font="TkFixedFont")
         self.Entry2.insert(0,"Password")
-        # self.Entry2.configure(textvariable=self.password)
+        self.Entry2.configure(textvariable=self.password)
         self.Entry2.bind("<FocusIn>",lambda event: self.Entry2.delete(0, tk.END))
         self.Entry2.configure(foreground="#000000")
         self.Entry2.configure(highlightbackground="#d9d9d9")
@@ -97,7 +113,7 @@ class toplevel:
         self.Entry2.configure(selectforeground="black")
 
         self.Button1 = tk.Button(self.Lframe,command=self.loginval)
-        self.Button1.place(relx=0.14, rely=0.621, height=34, width=307)
+        self.Button1.place(relx=0.14, rely=0.662, height=34, width=307)
         self.Button1.configure(activebackground="#ececec")
         self.Button1.configure(activeforeground="#d9d9d9")
         self.Button1.configure(background="#1d95f8")
@@ -109,14 +125,14 @@ class toplevel:
         self.Button1.configure(highlightcolor="black")
         self.Button1.configure(overrelief="flat")
         self.Button1.configure(pady="0")
-        # self.Button1.configure(state='active')
+        self.Button1.configure(state='active')
         self.Button1.configure(text='Log In')
 
         self.TSeparator1 = ttk.Separator(self.Lframe)
-        self.TSeparator1.place(relx=0.2, rely=0.742, relwidth=0.556)
+        self.TSeparator1.place(relx=0.2, rely=0.783, relwidth=0.556)
 
         self.Label2 = tk.Label(self.Lframe)
-        self.Label2.place(relx=0.222, rely=0.794, height=41, width=174)
+        self.Label2.place(relx=0.222, rely=0.839, height=41, width=174)
         self.Label2.configure(background="#ffffff")
         self.Label2.configure(disabledforeground="#a3a3a3")
         self.Label2.configure(font=font10)
@@ -124,7 +140,7 @@ class toplevel:
         self.Label2.configure(text='''Don't have an account?''')
 
         self.Button2 = tk.Button(self.Lframe,command=self.signup)
-        self.Button2.place(relx=0.584, rely=0.802, height=31, width=72)
+        self.Button2.place(relx=0.584, rely=0.847, height=31, width=72)
         self.Button2.configure(activebackground="#ececec")
         self.Button2.configure(activeforeground="#000000")
         self.Button2.configure(background="#ffffff")
@@ -306,18 +322,10 @@ class toplevel:
         if(self.dp_url is not None):
             dp_url = self.dp_url
         bio = self.Text1.get("1.0",tk.END)
-        #print(user_id,passz,fname,dp_url,bio)
+        dp_url=""
+        print(user_id,passz,fname,dp_url,bio)
 
-        if(len(user_id)==0 and len(passz)==0):
-            messagebox.showwarning("warning", "Pls enter Username and password" )
-        elif(len(fname)!=0 and len(bio)!=0 and dp_url is not None):
-            if(dbvalidate.newsignup(user_id,passz,fname,dp_url,bio)):
-                root.destroy()
-                profile.start_gui(user_id)
-            else:
-                messagebox.showwarning("warning", "this Username already exists" )
-        else:
-            messagebox.showwarning("warning", "Pls enter all fields" )
+        
         
         
 if __name__ == '__main__':
