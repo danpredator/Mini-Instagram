@@ -62,7 +62,7 @@ class Toplevel1:
         self.Frame1.configure(highlightbackground="#d9d9d9")
         self.Frame1.configure(highlightcolor="black")
 
-        self.Button1 = tk.Button(self.Frame1,command="")
+        self.Button1 = tk.Button(self.Frame1,command=lambda: self.show_frame("Newsfeed"))
         self.Button1.place(relx=0.044, rely=0.154, height=34, width=44)
         self.Button1.configure(activebackground="#ececec")
         self.Button1.configure(activeforeground="#000000")
@@ -79,7 +79,7 @@ class Toplevel1:
         self.Button1.configure(image=_img1)
         #self.Button1.configure(image= ImageTk.PhotoImage(Image.open('home.png')))
 
-        self.Button2 = tk.Button(self.Frame1,command="")
+        self.Button2 = tk.Button(self.Frame1,command=lambda: self.show_frame("search"))
         self.Button2.place(relx=0.222, rely=0.154, height=37, width=47)
         self.Button2.configure(activebackground="#ececec")
         self.Button2.configure(activeforeground="#000000")
@@ -94,7 +94,7 @@ class Toplevel1:
         _img2 = ImageTk.PhotoImage(Image.open('search.png').resize((40,35),Image.ANTIALIAS))
         self.Button2.configure(image=_img2)
 
-        self.Button3 = tk.Button(self.Frame1,command="")
+        self.Button3 = tk.Button(self.Frame1,command=lambda: self.show_frame("uploadz"))
         self.Button3.place(relx=0.422, rely=0.154, height=34, width=47)
         self.Button3.configure(activebackground="#ececec")
         self.Button3.configure(activeforeground="#000000")
@@ -109,7 +109,7 @@ class Toplevel1:
         _img3 = ImageTk.PhotoImage(Image.open('upload.png').resize((50,50),Image.ANTIALIAS))
         self.Button3.configure(image=_img3)
 
-        self.Button4 = tk.Button(self.Frame1,command="")
+        self.Button4 = tk.Button(self.Frame1,command=lambda: self.show_frame("heart"))
         self.Button4.place(relx=0.622, rely=0.154, height=34, width=47)
         self.Button4.configure(activebackground="#ececec")
         self.Button4.configure(activeforeground="#000000")
@@ -124,7 +124,7 @@ class Toplevel1:
         _img4 = ImageTk.PhotoImage(Image.open('heart.png').resize((40,35),Image.ANTIALIAS))
         self.Button4.configure(image=_img4)
 
-        self.Button5 = tk.Button(self.Frame1,command="")
+        self.Button5 = tk.Button(self.Frame1,command=lambda: self.show_frame("profileinfo"))
         self.Button5.place(relx=0.822, rely=0.154, height=34, width=45)
         self.Button5.configure(activebackground="#ececec")
         self.Button5.configure(activeforeground="#000000")
@@ -139,9 +139,66 @@ class Toplevel1:
         _img5 = ImageTk.PhotoImage(Image.open('profile.png').resize((50,50),Image.ANTIALIAS))
         self.Button5.configure(image=_img5)
 
+        self.frames = {}
+        for F in (Newsfeed,search,uploadz,heart,profileinfo):
+            page_name = F.__name__
+            frame = F(parent=self.container, controller=self)
+            self.frames[page_name] = frame
+            #frame.grid(row=0, column=0, sticky="nsew")
 
+        self.show_frame("profileinfo")
+
+    def show_frame(self, page_name):
+        #swap btw the frames
+        frame = self.frames[page_name]
+                       
+        frame.tkraise()
+
+class Newsfeed(tk.Frame):
+    def __init__(self,parent,controller):
+        tk.Frame.__init__(self,parent)
+        
+        self.controller =controller
+        self.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
+        self.configure(background="cyan")
+
+
+class search(tk.Frame):
+    def __init__(self,parent,controller):
+        tk.Frame.__init__(self,parent)
+        
+        self.controller =controller
+        self.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
+        self.configure(background="red")
         
 
+class uploadz(tk.Frame):
+    def __init__(self,parent,controller):
+        tk.Frame.__init__(self,parent)
+       
+        self.controller =controller
+        self.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
+        self.configure(background="blue")
+
+
+class heart(tk.Frame):
+    def __init__(self,parent,controller):
+        tk.Frame.__init__(self,parent)
+        
+        self.controller =controller
+        self.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
+        self.configure(background="yellow")
+
+
+class profileinfo(tk.Frame):
+    def __init__(self,parent,controller):
+        tk.Frame.__init__(self,parent)
+
+        self.controller =controller
+        self.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
+        self.configure(background="orange")
     
+
+
 if __name__ == '__main__':
     start_gui()
