@@ -335,6 +335,5 @@ def deactivateuser(user_id):
 
 if __name__ == "__main__":
     pass
-    #followingotp("hoii","ramzzz")
-    #print(profile("nawazuddin._siddiqui"))
+    print(profile("akshaykumar"))
     

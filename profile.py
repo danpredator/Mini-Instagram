@@ -2,10 +2,13 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from PIL import ImageTk,Image
 import login
+import dbvalidate
 from tkinter import filedialog
 
-def start_gui():
+def start_gui(user_id):
     
+    global root,useridgol
+    useridgol = user_id
     root = tk.Tk()
     Toplevel1 (root)
     root.mainloop()
@@ -210,16 +213,27 @@ class Newsfeed(tk.Frame):
         self.scrl_can.create_window((0,0),window=self.Frame_1,anchor='nw')
         self.Frame_1.bind("<Configure>",lambda event: self.scrl_can.configure(scrollregion=self.scrl_can.bbox("all")))
 
+        imgsurl = dbvalidate.newsfeed(useridgol)
+        #print(imgsurl)
         global _img         
-        _img = ImageTk.PhotoImage(Image.open('storyimg.png').resize((400,300),Image.ANTIALIAS))
-        
-        for i in range(0,5):
-            #f = tk.Frame(self.Frame_1, height = 100, width = 100,bg="yellow")
-            #f.pack_propagate(0) 
-            #f.place(x = 0, y = i+100)
-            tk.Button(self.Frame_1,text=None,font=font9,compound="right",image=_img,background="#eeeeee",borderwidth="0").grid(row=i,column=0,padx=10, pady=10)
-            #tk.Label(self.Frame_1,text="Images",font=font9,image=_img,compound="right").grid(row=i,column=0)
-            #tk.Label(self.Frame_1,image=img,bg="blue").grid(row=i+1,column=0)
+        _img = imgsurl
+        if _img == []:
+            _img = ImageTk.PhotoImage(Image.open('nopost.jpg').resize((400,400),Image.ANTIALIAS))
+            tk.Button(self.Frame_1,image=_img,background="#eeeeee",
+                              borderwidth="0").grid(row=0,column=0,padx=10, pady=10)
+        else:
+            global imgcr
+            imgcr=[]
+            i=0
+            #print("1",_img)            
+            for img in _img:
+                #print("2",img)
+                imgcr.append(ImageTk.PhotoImage(Image.open(img[1]).resize((400,300),Image.ANTIALIAS)))
+                bt = tk.Button(self.Frame_1,image=imgcr[i],background="#eeeeee",
+                        borderwidth="0")
+                bt.configure(command="")
+                bt.grid(row=i,column=0,padx=10, pady=10)
+                i+=1
         
     
    
@@ -406,6 +420,9 @@ class profileinfo(tk.Frame):
         font9 = "-family {Segoe UI} -size 11 -weight bold -slant roman "  \
             "-underline 0 -overstrike 0"
 
+        self.userz = tk.StringVar()
+        self.fname = tk.StringVar()
+
         self.controller =controller
         self.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
         
@@ -433,7 +450,7 @@ class profileinfo(tk.Frame):
         self.Label2.configure(foreground="#000000")
         self.Label2.configure(highlightbackground="#d9d9d9")
         self.Label2.configure(highlightcolor="black")
-        self.Label2.configure(text='''USERNAME''')
+        self.Label2.configure(textvariable=self.userz) #username
 
         self.Label3 = tk.Label(self)
         self.Label3.place(relx=0.4, rely=0.202, height=21, width=41)
@@ -457,7 +474,7 @@ class profileinfo(tk.Frame):
         self.Label6.configure(foreground="#000000")
         self.Label6.configure(highlightbackground="#d9d9d9")
         self.Label6.configure(highlightcolor="black")
-        self.Label6.configure(text='''FName''')
+        self.Label6.configure(textvariable=self.fname) #fname
 
         self.Text1 = tk.Text(self) #text area for bio
         self.Text1.place(relx=0.044, rely=0.404, relheight=0.154, relwidth=0.431)
@@ -585,16 +602,52 @@ class profileinfo(tk.Frame):
         self.Canvas1.create_window((0,0),window=self.Frame_1,anchor='nw')
         self.Frame_1.bind("<Configure>",lambda event: self.Canvas1.configure(scrollregion=self.Canvas1.bbox("all")))
 
-        ## image loop
+        self.setvalue()
+    
+    def setvalue(self):
+        record,folwerno,folwingno,imgsurl,postno = dbvalidate.profile(useridgol)
+        self.userz.set(record[0])
+        self.fname.set(record[1])
+        global dp
+        dp = ImageTk.PhotoImage(Image.open(record[2]).resize((120,80),Image.ANTIALIAS))
+        self.Button6.configure(image=dp)
 
-        global _img         
-        _img = ImageTk.PhotoImage(Image.open('storyimg.png').resize((110,100),Image.ANTIALIAS))
-        
-        for i in range(0,5):
-           
-            tk.Button(self.Frame_1,text=None,font=font9,compound="right",image=_img,background="#eeeeee",borderwidth="0").grid(row=i,column=0,padx=10, pady=10)
+        self.Text1.delete("1.0",tk.END)
+        self.Text1.insert(tk.END,record[3])
+        self.Text1.configure(state='disabled')
+        self.Button7.configure(text=folwerno[0])
+        self.Button8.configure(text=folwingno[0])
+
+        if(postno == []):
+            self.Label7.configure(text="0")
+        else:
+            self.Label7.configure(text=str(postno[0][1]))
+
+        global _img_f         
+        _img_f = imgsurl
+        if _img_f == []:
+            self.Label7.config(text="0")
+            _img_f = ImageTk.PhotoImage(Image.open('nopost.jpg').resize((370,120),Image.ANTIALIAS))
+            tk.Button(self.Frame_1,image=_img_f,background="#eeeeee",
+                    borderwidth="0").grid(row=0,column=0,padx=10, pady=10)
+        else:
+            global imgcr
+            imgcr=[]
+            l=i=j=0
+            
+            for img in _img_f:
+                
+                imgcr.append(ImageTk.PhotoImage(Image.open(img[1]).resize((110,100),Image.ANTIALIAS)))
+                tk.Button(self.Frame_1,image=imgcr[l],background="#eeeeee",
+                       borderwidth="0").grid(row=j,column=i,padx=10, pady=10)
+                l+=1
+                if(i<2):
+                    i+=1
+                else:
+                    i=0
+                    j+=1   
            
 
 
 if __name__ == '__main__':
-    start_gui()
+    start_gui("akshaykumar")
