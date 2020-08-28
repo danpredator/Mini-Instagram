@@ -255,11 +255,197 @@ class heart(tk.Frame):
 class profileinfo(tk.Frame):
     def __init__(self,parent,controller):
         tk.Frame.__init__(self,parent)
+        font9 = "-family {Segoe UI} -size 11 -weight bold -slant roman "  \
+            "-underline 0 -overstrike 0"
 
         self.controller =controller
         self.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
-        self.configure(background="orange")
-    
+        
+        self.Button6 = tk.Button(self)
+        self.Button6.place(relx=0.044, rely=0.11, height=90, width=125)
+        self.Button6.configure(activebackground="#ececec")
+        self.Button6.configure(activeforeground="#000000")
+        self.Button6.configure(background="#eeeeee")
+        
+        self.Button6.configure(borderwidth="0")
+        self.Button6.configure(disabledforeground="#a3a3a3")
+        self.Button6.configure(foreground="#000000")
+        self.Button6.configure(highlightbackground="#d9d9d9")
+        self.Button6.configure(highlightcolor="black")
+        self.Button6.configure(pady="0")
+        self.Button6.configure(text='''Dp''')
+
+        self.Label2 = tk.Label(self)
+        self.Label2.place(relx=0.022, rely=0.018, height=31, width=134)
+        self.Label2.configure(activebackground="#f9f9f9")
+        self.Label2.configure(activeforeground="black")
+        self.Label2.configure(background="#eeeeee")
+        self.Label2.configure(disabledforeground="#a3a3a3")
+        self.Label2.configure(font="-family {Arial} -size 9 -weight bold")
+        self.Label2.configure(foreground="#000000")
+        self.Label2.configure(highlightbackground="#d9d9d9")
+        self.Label2.configure(highlightcolor="black")
+        self.Label2.configure(text='''USERNAME''')
+
+        self.Label3 = tk.Label(self)
+        self.Label3.place(relx=0.4, rely=0.202, height=21, width=41)
+        self.Label3.configure(activebackground="#f9f9f9")
+        self.Label3.configure(activeforeground="black")
+        self.Label3.configure(background="#eeeeee")
+        self.Label3.configure(disabledforeground="#a3a3a3")
+        self.Label3.configure(font="-family {Arial} -size 12")
+        self.Label3.configure(foreground="#000000")
+        self.Label3.configure(highlightbackground="#d9d9d9")
+        self.Label3.configure(highlightcolor="black")
+        self.Label3.configure(text='''Post''')
+
+        self.Label6 = tk.Label(self)
+        self.Label6.place(relx=0.044, rely=0.28, height=30, width=152)
+        self.Label6.configure(activebackground="#f9f9f9")
+        self.Label6.configure(activeforeground="black")
+        self.Label6.configure(background="#eeeeee")
+        self.Label6.configure(disabledforeground="#a3a3a3")
+        self.Label6.configure(font="-family {Arial Black} -size 9 -weight bold")
+        self.Label6.configure(foreground="#000000")
+        self.Label6.configure(highlightbackground="#d9d9d9")
+        self.Label6.configure(highlightcolor="black")
+        self.Label6.configure(text='''FName''')
+
+        self.Text1 = tk.Text(self) #text area for bio
+        self.Text1.place(relx=0.044, rely=0.404, relheight=0.154, relwidth=0.431)
+
+        self.Text1.configure(background="white")
+        self.Text1.configure(font="TkTextFont")
+        self.Text1.configure(foreground="black")
+        self.Text1.configure(highlightbackground="#d9d9d9")
+        self.Text1.configure(highlightcolor="black")
+        self.Text1.configure(insertbackground="black")
+        self.Text1.configure(selectbackground="#c4c4c4")
+        self.Text1.configure(selectforeground="black")
+        self.Text1.configure(wrap="word")
+
+        self.Label7 = tk.Label(self)
+        self.Label7.place(relx=0.4, rely=0.147, height=21, width=48)
+        self.Label7.configure(activebackground="#f9f9f9")
+        self.Label7.configure(activeforeground="black")
+        self.Label7.configure(background="#eeeeee")
+        self.Label7.configure(disabledforeground="#a3a3a3")
+        self.Label7.configure(font="-family {Segoe UI} -size 9 -weight bold")
+        self.Label7.configure(foreground="#000000")
+        self.Label7.configure(highlightbackground="#d9d9d9")
+        self.Label7.configure(highlightcolor="black")
+        self.Label7.configure(text='''postNO''')
+
+        self.Button7 = tk.Button(self)
+        self.Button7.place(relx=0.578, rely=0.147, height=20, width=70)
+        self.Button7.configure(activebackground="#ececec")
+        self.Button7.configure(activeforeground="#000000")
+        self.Button7.configure(background="#eeeeee")
+        self.Button7.configure(borderwidth="0")
+        self.Button7.configure(disabledforeground="#a3a3a3")
+        self.Button7.configure(font=font9)
+        self.Button7.configure(foreground="#000000")
+        self.Button7.configure(highlightbackground="#d9d9d9")
+        self.Button7.configure(highlightcolor="black")
+        self.Button7.configure(pady="0")
+        self.Button7.configure(text='''FollowerNO''')
+
+        self.Button8 = tk.Button(self)
+        self.Button8.place(relx=0.8, rely=0.147, height=21, width=67)
+        self.Button8.configure(activebackground="#ececec")
+        self.Button8.configure(activeforeground="#000000")
+        self.Button8.configure(background="#eeeeee")
+        self.Button8.configure(borderwidth="0")
+        self.Button8.configure(disabledforeground="#a3a3a3")
+        self.Button8.configure(font=font9)
+        self.Button8.configure(foreground="#000000")
+        self.Button8.configure(highlightbackground="#d9d9d9")
+        self.Button8.configure(highlightcolor="black")
+        self.Button8.configure(pady="0")
+        self.Button8.configure(text='''FollwngNO''')
+
+
+        self.Label3_1 = tk.Label(self)
+        self.Label3_1.place(relx=0.578, rely=0.202, height=21, width=71)
+        self.Label3_1.configure(activebackground="#f9f9f9")
+        self.Label3_1.configure(activeforeground="black")
+        self.Label3_1.configure(background="#eeeeee")
+        self.Label3_1.configure(disabledforeground="#a3a3a3")
+        self.Label3_1.configure(font="-family {Arial} -size 12")
+        self.Label3_1.configure(foreground="#000000")
+        self.Label3_1.configure(highlightbackground="#d9d9d9")
+        self.Label3_1.configure(highlightcolor="black")
+        self.Label3_1.configure(text='''Follower''')
+
+        self.Label3_2 = tk.Label(self)
+        self.Label3_2.place(relx=0.8, rely=0.202, height=21, width=64)
+        self.Label3_2.configure(activebackground="#f9f9f9")
+        self.Label3_2.configure(activeforeground="black")
+        self.Label3_2.configure(background="#eeeeee")
+        self.Label3_2.configure(disabledforeground="#a3a3a3")
+        self.Label3_2.configure(font="-family {Arial} -size 12")
+        self.Label3_2.configure(foreground="#000000")
+        self.Label3_2.configure(highlightbackground="#d9d9d9")
+        self.Label3_2.configure(highlightcolor="black")
+        self.Label3_2.configure(text='''Following''')
+
+        self.Label4 = tk.Label(self)
+        self.Label4.place(relx=0.044, rely=0.661, height=41, width=404)
+        self.Label4.configure(activebackground="#f9f9f9")
+        self.Label4.configure(activeforeground="black")
+        self.Label4.configure(background="#eeeeee")
+        self.Label4.configure(disabledforeground="#a3a3a3")
+        self.Label4.configure(foreground="#000000")
+        self.Label4.configure(highlightbackground="#d9d9d9")
+        self.Label4.configure(highlightcolor="black")
+        self.Label4.configure(text='''image of feeds''')
+
+        self.Button9 = tk.Button(self)
+        self.Button9.place(relx=0.044, rely=0.587, height=34, width=387)
+        self.Button9.configure(activebackground="#ececec")
+        self.Button9.configure(activeforeground="#000000")
+        self.Button9.configure(background="#eeeeee")
+        self.Button9.configure(borderwidth="0")
+        self.Button9.configure(disabledforeground="#a3a3a3")
+        self.Button9.configure(font=font9)
+        self.Button9.configure(foreground="#000000")
+        self.Button9.configure(highlightbackground="#d9d9d9")
+        self.Button9.configure(highlightcolor="black")
+        self.Button9.configure(pady="0")
+        self.Button9.configure(text='''Edit Profile''')
+
+        self.Frame_s = tk.Frame(self) #add scroll to scr_lcan
+        self.Frame_s.place(relx=0.022, rely=0.752, relheight=0.226, relwidth=0.962)
+
+        self.Canvas1 = tk.Canvas(self.Frame_s)
+        self.Canvas1.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
+        self.Canvas1.configure(background="#eeeeee")
+        self.Canvas1.configure(borderwidth="2")
+        self.Canvas1.configure(insertbackground="black")
+        self.Canvas1.configure(relief="ridge")
+        self.Canvas1.configure(selectbackground="#c4c4c4")
+        self.Canvas1.configure(selectforeground="black")
+
+        self.scrollbar=tk.Scrollbar(self.Frame_s,orient="vertical",command=self.Canvas1.yview)
+        self.Canvas1.configure(yscrollcommand=self.scrollbar.set)
+        self.scrollbar.pack(side="right",fill="y")
+
+        self.Frame_1 = tk.Frame(self.Canvas1)# combine this to scrol
+        self.Frame_1.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
+        self.Frame_1.configure(relief="groove")
+        self.Frame_1.configure(background="#d9d9d9")
+        self.Canvas1.create_window((0,0),window=self.Frame_1,anchor='nw')
+        self.Frame_1.bind("<Configure>",lambda event: self.Canvas1.configure(scrollregion=self.Canvas1.bbox("all")))
+
+        ## image loop
+
+        global _img         
+        _img = ImageTk.PhotoImage(Image.open('storyimg.png').resize((110,100),Image.ANTIALIAS))
+        
+        for i in range(0,5):
+           
+            tk.Button(self.Frame_1,text=None,font=font9,compound="right",image=_img,background="#eeeeee",borderwidth="0").grid(row=i,column=0,padx=10, pady=10)
+           
 
 
 if __name__ == '__main__':
