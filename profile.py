@@ -221,17 +221,86 @@ class Newsfeed(tk.Frame):
             #tk.Label(self.Frame_1,image=img,bg="blue").grid(row=i+1,column=0)
         
     
-        
-
-
+   
 
 class search(tk.Frame):
     def __init__(self,parent,controller):
         tk.Frame.__init__(self,parent)
+        font10 = "-family Arial -size 11 -weight normal -slant roman "  \
+            "-underline 0 -overstrike 0"
         
         self.controller =controller
         self.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
-        self.configure(background="red")
+        
+        self.Entry2 = tk.Entry(self)
+        self.Entry2.place(relx=0.022, rely=0.018,height=40, relwidth=0.787)
+        self.Entry2.configure(background="white")
+        self.Entry2.configure(disabledforeground="#a3a3a3")
+        self.Entry2.configure(font="TkFixedFont")
+        self.Entry2.configure(foreground="#000000")
+        self.Entry2.configure(insertbackground="black")
+
+        self.Button_s = tk.Button(self,command="")
+        self.Button_s.place(relx=0.822, rely=0.018, height=34, width=67)
+        self.Button_s.configure(activebackground="#ececec")
+        self.Button_s.configure(activeforeground="#000000")
+        self.Button_s.configure(background="#eeeeee")
+        self.Button_s.configure(borderwidth="0")
+        self.Button_s.configure(disabledforeground="#a3a3a3")
+        self.Button_s.configure(font=font10)
+        self.Button_s.configure(foreground="#000000")
+        self.Button_s.configure(highlightbackground="#d9d9d9")
+        self.Button_s.configure(highlightcolor="black")
+        self.Button_s.configure(pady="0")
+        self.Button_s.configure(text='''Search''')
+
+        self.Frame_s = tk.Frame(self) #add scroll to scr_lcan
+        self.Frame_s.place(relx=0.022, rely=0.11, relheight=0.868, relwidth=0.962)
+
+        self.Canvas3 = tk.Canvas(self.Frame_s)
+        self.Canvas3.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
+        self.Canvas3.configure(background="#eeeeee")
+        self.Canvas3.configure(borderwidth="2")
+        self.Canvas3.configure(insertbackground="black")
+        self.Canvas3.configure(relief="ridge")
+        self.Canvas3.configure(selectbackground="#c4c4c4")
+        self.Canvas3.configure(selectforeground="black")
+
+        self.scrollbar=tk.Scrollbar(self.Frame_s,orient="vertical",command=self.Canvas3.yview)
+        self.Canvas3.configure(yscrollcommand=self.scrollbar.set)
+        self.scrollbar.pack(side="right",fill="y")
+
+        self.Frame_1 = tk.Frame(self.Canvas3)# combine this to scrol
+        self.Frame_1.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
+        self.Frame_1.configure(relief="groove")
+        self.Frame_1.configure(background="#d9d9d9")
+        self.Canvas3.create_window((0,0),window=self.Frame_1,anchor='nw')
+        self.Frame_1.bind("<Configure>",lambda event: self.Canvas3.configure(scrollregion=self.Canvas3.bbox("all")))
+
+        global _img_se
+        _img_se =[]
+        if _img_se == []:
+            _img_se = ImageTk.PhotoImage(Image.open('nopost.jpg').resize((400,400),Image.ANTIALIAS))
+            tk.Button(self.Frame_1,image=_img_se,background="#eeeeee",
+                              borderwidth="0").grid(row=0,column=0,padx=10, pady=10)
+        else:
+            global imgcr
+            imgcr=[]
+            j=l=i=0
+            #print("1",_img)            
+            for img in _img_se:
+                #print("2",img)resize((110,120),Image.ANTIALIAS)
+                imgcr.append(ImageTk.PhotoImage(Image.open("storyimg.png").resize((110,120),Image.ANTIALIAS)))
+                bt = tk.Button(self.Frame_1,image=imgcr[l],background="#eeeeee",
+                        borderwidth="0")
+                bt.configure(command="")
+                bt.grid(row=j,column=i,padx=10, pady=10)
+                l+=1
+                if(i<2):
+                    i+=1
+                else:
+                    i=0
+                    j+=1  
         
 
 class uploadz(tk.Frame):
