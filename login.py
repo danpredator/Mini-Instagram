@@ -309,7 +309,7 @@ class toplevel:
         
 
     def upload_dp(self):
-        self.dp_url = filedialog.askopenfilename(filetypes=[('Images1', '*.jpg'),('Images2', '*.png')])
+        self.dp_url = filedialog.askopenfilename(filetypes=[('ProfilePic', '*.jpg'),('Images2', '*.png')])
         self.Button2.config(text=self.dp_url[-20:])
         
 
