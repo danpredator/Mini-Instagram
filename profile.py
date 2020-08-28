@@ -157,10 +157,113 @@ class Toplevel1:
 class Newsfeed(tk.Frame):
     def __init__(self,parent,controller):
         tk.Frame.__init__(self,parent)
+        font9 = "-family {Segoe UI} -size 11 -weight bold -slant roman "  \
+            "-underline 0 -overstrike 0"
+
         
         self.controller =controller
         self.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
-        self.configure(background="cyan")
+        #self.configure(relief='groove')
+        #self.configure(borderwidth="2")
+        #self.configure(relief="groove")
+        #self.configure(background="#d9d9d9")
+        #self.configure(highlightbackground="#d9d9d9")
+        #self.configure(highlightcolor="black")
+
+        self.Label1 = tk.Label(self)
+        self.Label1.place(relx=0.0, rely=0.0, height=121, width=450)
+        self.Label1.configure(activebackground="#f9f9f9")
+        self.Label1.configure(activeforeground="black")
+        self.Label1.configure(background="#feb4c2")
+        self.Label1.configure(disabledforeground="#a3a3a3")
+        self.Label1.configure(foreground="#000000")
+        self.Label1.configure(highlightbackground="#d9d9d9")
+        self.Label1.configure(highlightcolor="black")
+        self.Label1.configure(text='''insta top stroy''')
+        global _img_s         
+        _img_s = ImageTk.PhotoImage(Image.open('storyimg.png').resize((450,130),Image.ANTIALIAS))
+        self.Label1.configure(image=_img_s)
+
+         #post for scroll
+        self.Frame_s = tk.Frame(self) #add scroll to scr_can
+        self.Frame_s.place(relx=0.0, rely=0.22, relheight=0.78, relwidth=1.0)
+        self.Frame_s.configure(relief='groove')
+        #self.scrl_can.configure(borderwidth="2")
+        self.Frame_s.configure(relief="groove")
+        self.Frame_s.configure(background="#d9d9d9")
+
+        self.scrl_can = tk.Canvas(self.Frame_s)# combine this to scroll
+        self.scrl_can.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
+        self.scrl_can.configure(relief="groove")
+        self.scrl_can.configure(background="#d9d9d9")
+
+        
+        self.scrollbar=tk.Scrollbar(self.Frame_s,orient="vertical",command=self.scrl_can.yview)
+        self.scrl_can.configure(yscrollcommand=self.scrollbar.set)
+        self.scrollbar.pack(side="right",fill="y")
+
+        self.Frame_1 = tk.Frame(self.scrl_can)# combine this to scrol
+        self.Frame_1.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
+        self.Frame_1.configure(relief="groove")
+        self.Frame_1.configure(background="#d9d9d9")
+        self.scrl_can.create_window((0,0),window=self.Frame_1,anchor='nw')
+        self.Frame_1.bind("<Configure>",lambda event: self.scrl_can.configure(scrollregion=self.scrl_can.bbox("all")))
+
+        self.Frame_p = tk.Frame(self.scrl_can)# doesnt wrk wit frame
+        self.Frame_p.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
+        self.Frame_p.configure(relief="groove")
+        self.Frame_p.configure(background="#d9d9d9")
+                
+
+        self.Label2 = tk.Label(self.Frame_p)
+        self.Label2.place(relx=0.0, rely=0.0, height=51, width=450)
+        self.Label2.configure(anchor='w')
+        self.Label2.configure(background="#d9d9d9")
+        self.Label2.configure(disabledforeground="#a3a3a3")
+        self.Label2.configure(foreground="#000000")
+        self.Label2.configure(state='active')
+        self.Label2.configure(text='username_f')
+
+        self.Canv_postPic = tk.Canvas(self.Frame_p)
+        self.Canv_postPic.place(relx=0.0, rely=0.118, relheight=0.689
+                , relwidth=1.0)
+        self.Canv_postPic.configure(background="#d9d9d9")
+        #self.Canv_postPic.configure(borderwidth="2")
+        self.Canv_postPic.configure(insertbackground="black")
+        self.Canv_postPic.configure(relief="ridge")
+        self.Canv_postPic.configure(selectbackground="#c4c4c4")
+        self.Canv_postPic.configure(selectforeground="black")
+
+        self.Button6 = tk.Button(self.Frame_p)
+        self.Button6.place(relx=0.0, rely=0.8, height=51, width=57)
+        self.Button6.configure(activebackground="#ececec")
+        self.Button6.configure(activeforeground="#000000")
+        self.Button6.configure(background="#d9d9d9")
+        self.Button6.configure(disabledforeground="#a3a3a3")
+        self.Button6.configure(foreground="#000000")
+        self.Button6.configure(highlightbackground="#d9d9d9")
+        self.Button6.configure(highlightcolor="black")
+        self.Button6.configure(pady="0")
+        self.Button6.configure(text='Like')
+
+        self.Label3 = tk.Label(self.Frame_p)
+        self.Label3.place(relx=0.111, rely=0.8, height=51, width=404)
+        self.Label3.configure(background="#e8003a")
+        self.Label3.configure(disabledforeground="#a3a3a3")
+        self.Label3.configure(foreground="#000000")
+        self.Label3.configure(text='cmt_shareimg')
+
+        self.Label4 = tk.Label(self.Frame_p)
+        self.Label4.place(relx=0.0, rely=0.925, height=30, width=134)
+        self.Label4.configure(background="#15ff33")
+        self.Label4.configure(disabledforeground="#a3a3a3")
+        self.Label4.configure(font=font9)
+        self.Label4.configure(foreground="#000000")
+        self.Label4.configure(text='N_Likes')
+        
+    
+        
+
 
 
 class search(tk.Frame):
