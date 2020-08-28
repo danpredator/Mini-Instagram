@@ -239,11 +239,33 @@ class Newsfeed(tk.Frame):
                 imgcr.append(ImageTk.PhotoImage(Image.open(img[1]).resize((400,300),Image.ANTIALIAS)))
                 bt = tk.Button(self.Frame_1,image=imgcr[i],background="#eeeeee",
                         borderwidth="0")
-                bt.configure(command="")
+                bt.configure(command=lambda pic_id = img[0]: self.popup_dis(pic_id))
                 bt.grid(row=i,column=0,padx=10, pady=10)
                 i+=1
         
-    
+    def popup_dis(self,pic_id):
+        win = tk.Toplevel()
+        win.title("Img info")
+        win.geometry("120x150")
+        userid,likeNo,capt = dbvalidate.captlike(useridgol,pic_id)
+
+        global like_i
+        like_i=True
+        tk.Label(win,foreground="#d11b60", text=str(userid[0])).grid(row=0, column=0,padx=10,pady=10)
+        lik = tk.Label(win,foreground="#d11b60", text=str(likeNo[0])+" Likes")
+        lik.grid(row=1, column=0,padx=10,pady=10)
+        tk.Label(win,foreground="#d11b60", text=str(capt[0])).grid(row=2, column=0,padx=10,pady=10)
+        tk.Button(win,foreground="#d11b60", text="Like", 
+            command=lambda: self.liketoggle(lik,useridgol,pic_id)).grid(row=3, column=0)   
+
+    def liketoggle(self,lik,useridgol,pic_id):
+        global like_i
+        if(like_i):
+            lik.configure(text=str(dbvalidate.captlike(useridgol,pic_id,flag=True)[0])+" Likes")
+            like_i = not like_i
+        else:
+            lik.configure(text=str(dbvalidate.captlike(useridgol,pic_id,flag=True)[0])+" Likes")
+            like_i = not like_i
    
 
 class search(tk.Frame):
