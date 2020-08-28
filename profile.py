@@ -4,6 +4,8 @@ from PIL import ImageTk,Image
 import login
 import dbvalidate
 from tkinter import filedialog
+import sys
+import builtins
 
 def start_gui(user_id):
     
@@ -146,7 +148,7 @@ class Toplevel1:
         self.frames = {}
         for F in (Newsfeed,search,uploadz,heart,profileinfo):
             page_name = F.__name__
-            frame = F(parent=self.container, controller=self)
+            frame = F.__new__(F)
             self.frames[page_name] = frame
             #frame.grid(row=0, column=0, sticky="nsew")
 
@@ -155,6 +157,12 @@ class Toplevel1:
     def show_frame(self, page_name):
         #swap btw the frames
         frame = self.frames[page_name]
+        frame.__init__(parent=self.container, controller=self)
+        # clsx = frame.__class__
+        # modname = clsx.__name__
+        # del sys.modules[modname]
+        # module = __import__(modname)
+        # frame.__class__ = getattr(module,clsx.__name__)
                        
         frame.tkraise()
 
