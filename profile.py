@@ -2,6 +2,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from PIL import ImageTk,Image
 import login
+from tkinter import filedialog
 
 def start_gui():
     
@@ -306,10 +307,60 @@ class search(tk.Frame):
 class uploadz(tk.Frame):
     def __init__(self,parent,controller):
         tk.Frame.__init__(self,parent)
+        font12 = "-family {Arial Black} -size 11 -weight bold -slant "  \
+            "roman -underline 0 -overstrike 0"
        
         self.controller =controller
         self.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
-        self.configure(background="blue")
+        
+        self.pic_url = None
+        self.Button1 = tk.Button(self,command=self.uploadhere)
+        self.Button1.place(relx=0.256, rely=0.093, height=155, width=200)
+        self.Button1.configure(activebackground="#ececec")
+        self.Button1.configure(activeforeground="#000000")
+        self.Button1.configure(background="#eeeeee")
+        self.Button1.configure(disabledforeground="#a3a3a3")
+        self.Button1.configure(foreground="#000000")
+        self.Button1.configure(highlightbackground="#d9d9d9")
+        self.Button1.configure(highlightcolor="black")
+        self.Button1.configure(pady="0")
+        self.Button1.configure(text='''Upload here''')
+
+        self.capt = tk.StringVar()
+        self.Entry1 = tk.Entry(self,textvariable=self.capt)
+        self.Entry1.place(relx=0.465, rely=0.467,height=30, relwidth=0.381)
+        self.Entry1.configure(background="white")
+        self.Entry1.configure(disabledforeground="#a3a3a3")
+        self.Entry1.configure(font="TkFixedFont")
+        self.Entry1.configure(foreground="#000000")
+        self.Entry1.configure(insertbackground="black")
+
+        self.Label1 = tk.Label(self)
+        self.Label1.place(relx=0.093, rely=0.467, height=41, width=94)
+        self.Label1.configure(background="#eeeeee")
+        self.Label1.configure(disabledforeground="#a3a3a3")
+        self.Label1.configure(foreground="#000000")
+        self.Label1.configure(text='''Caption''')
+
+        self.Button2 = tk.Button(self,command="")
+        self.Button2.place(relx=0.372, rely=0.617, height=44, width=87)
+        self.Button2.configure(activebackground="#ececec")
+        self.Button2.configure(activeforeground="#000000")
+        self.Button2.configure(background="#eeeeee")
+        self.Button2.configure(borderwidth="0")
+        self.Button2.configure(font=font12)
+        self.Button2.configure(disabledforeground="#a3a3a3")
+        self.Button2.configure(highlightbackground="#d9d9d9")
+        self.Button2.configure(pady="0")        
+        self.Button2.configure(foreground="#00bfb6")
+        self.Button2.configure(highlightcolor="black")
+        self.Button2.configure(text='''Upload''')
+
+    def uploadhere(self):
+        self.pic_url = filedialog.askopenfilename(filetypes=[('Images1', '*.png'),('Images2', '*.jpg')])
+        global dis_up
+        dis_up = ImageTk.PhotoImage(Image.open(self.pic_url).resize((140,120),Image.ANTIALIAS))
+        self.Button1.configure(image=dis_up)
 
 
 class heart(tk.Frame):
@@ -318,7 +369,35 @@ class heart(tk.Frame):
         
         self.controller =controller
         self.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
-        self.configure(background="yellow")
+        
+        self.Frame_s = tk.Frame(self) #add scroll to scr_lcan
+        self.Frame_s.place(relx=0.022, rely=0.018, relheight=0.96, relwidth=0.962)
+
+        self.Canvas3 = tk.Canvas(self.Frame_s)
+        self.Canvas3.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
+        self.Canvas3.configure(background="#eeeeee")
+        self.Canvas3.configure(borderwidth="2")
+        self.Canvas3.configure(insertbackground="black")
+        self.Canvas3.configure(relief="ridge")
+        self.Canvas3.configure(selectbackground="#c4c4c4")
+        self.Canvas3.configure(selectforeground="black")
+
+        self.scrollbar=tk.Scrollbar(self.Frame_s,orient="vertical",command=self.Canvas3.yview)
+        self.Canvas3.configure(yscrollcommand=self.scrollbar.set)
+        self.scrollbar.pack(side="right",fill="y")
+
+        self.Frame_1 = tk.Frame(self.Canvas3)# combine this to scrol
+        self.Frame_1.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
+        self.Frame_1.configure(relief="groove")
+        self.Frame_1.configure(background="#d9d9d9")
+        self.Canvas3.create_window((0,0),window=self.Frame_1,anchor='nw')
+        self.Frame_1.bind("<Configure>",lambda event: self.Canvas3.configure(scrollregion=self.Canvas3.bbox("all")))
+
+        
+        for i in range(50):
+           tk.Label(self.Frame_1,text=i).grid(row=i,column=0)
+           tk.Label(self.Frame_1,text="helloot"+str(i)).grid(row=i,column=1)
+
 
 
 class profileinfo(tk.Frame):
