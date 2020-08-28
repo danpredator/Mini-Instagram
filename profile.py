@@ -4,8 +4,10 @@ from PIL import ImageTk,Image
 import login
 import dbvalidate
 from tkinter import filedialog
+from tkinter import messagebox
 import sys
 import builtins
+import random
 
 def start_gui(user_id):
     
@@ -285,7 +287,7 @@ class search(tk.Frame):
         self.Entry2.configure(foreground="#000000")
         self.Entry2.configure(insertbackground="black")
 
-        self.Button_s = tk.Button(self,command="")
+        self.Button_s = tk.Button(self,command=self.searchchk)
         self.Button_s.place(relx=0.822, rely=0.018, height=34, width=67)
         self.Button_s.configure(activebackground="#ececec")
         self.Button_s.configure(activeforeground="#000000")
@@ -322,8 +324,10 @@ class search(tk.Frame):
         self.Canvas3.create_window((0,0),window=self.Frame_1,anchor='nw')
         self.Frame_1.bind("<Configure>",lambda event: self.Canvas3.configure(scrollregion=self.Canvas3.bbox("all")))
 
+        imgsz = dbvalidate.getallpics()
         global _img_se
-        _img_se =[]
+        random.shuffle(imgsz)
+        _img_se =imgsz
         if _img_se == []:
             _img_se = ImageTk.PhotoImage(Image.open('nopost.jpg').resize((400,400),Image.ANTIALIAS))
             tk.Button(self.Frame_1,image=_img_se,background="#eeeeee",
@@ -335,17 +339,280 @@ class search(tk.Frame):
             #print("1",_img)            
             for img in _img_se:
                 #print("2",img)resize((110,120),Image.ANTIALIAS)
-                imgcr.append(ImageTk.PhotoImage(Image.open("storyimg.png").resize((110,120),Image.ANTIALIAS)))
+                imgcr.append(ImageTk.PhotoImage(Image.open(img[1]).resize((110,120),Image.ANTIALIAS)))
                 bt = tk.Button(self.Frame_1,image=imgcr[l],background="#eeeeee",
                         borderwidth="0")
-                bt.configure(command="")
+                bt.configure(command=lambda pic_id = img[0]: self.popup_dis(pic_id))
                 bt.grid(row=j,column=i,padx=10, pady=10)
                 l+=1
                 if(i<2):
                     i+=1
                 else:
                     i=0
-                    j+=1  
+                    j+=1   
+                
+
+    def popup_dis(self,pic_id):
+        win = tk.Toplevel()
+        win.title("Img info")
+        win.geometry("120x150")
+        userid,likeNo,capt = dbvalidate.captlike(useridgol,pic_id)
+
+        global like_i
+        like_i=True
+        tk.Label(win,foreground="#d11b60", text=str(userid[0])).grid(row=0, column=0,padx=10,pady=10)
+        lik = tk.Label(win,foreground="#d11b60", text=str(likeNo[0])+" Likes")
+        lik.grid(row=1, column=0,padx=10,pady=10)
+        tk.Label(win,foreground="#d11b60", text=str(capt[0])).grid(row=2, column=0,padx=10,pady=10)
+        tk.Button(win,foreground="#d11b60", text="Like", 
+            command=lambda: self.liketoggle(lik,useridgol,pic_id)).grid(row=3, column=0)   
+
+    def liketoggle(self,lik,useridgol,pic_id):
+        global like_i
+        if(like_i):
+            lik.configure(text=str(dbvalidate.captlike(useridgol,pic_id,flag=True)[0])+" Likes")
+            like_i = not like_i
+        else:
+            lik.configure(text=str(dbvalidate.captlike(useridgol,pic_id,flag=True)[0])+" Likes")
+            like_i = not like_i
+    
+    def searchchk(self):
+        userz = self.Entry2.get() 
+        if ( len(userz)!=0 and userz != useridgol):
+            if(dbvalidate.searchck(userz)):
+                
+                record,folwerno,folwingno,imgsurl,postno = dbvalidate.profile(userz)
+                
+                self.Fra_sRes = tk.Frame(self)
+                self.Fra_sRes.place(relx=0.011, rely=0.008, relheight=0.982
+                                , relwidth=0.978)
+                self.Fra_sRes.configure(relief='groove')
+                self.Fra_sRes.configure(borderwidth="2")
+                self.Fra_sRes.configure(relief="groove")
+                self.Fra_sRes.configure(background="#d9d9d9")
+                self.Fra_sRes.configure(highlightbackground="#d9d9d9")
+                self.Fra_sRes.configure(highlightcolor="black")
+
+                self.Label2 = tk.Label(self.Fra_sRes)
+                self.Label2.place(relx=0.023, rely=0.018, height=31, width=104)
+                self.Label2.configure(activebackground="#f9f9f9")
+                self.Label2.configure(activeforeground="black")
+                self.Label2.configure(background="#d9d9d9")
+                self.Label2.configure(disabledforeground="#a3a3a3")
+                self.Label2.configure(font="-family {Arial} -size 9 -weight bold")
+                self.Label2.configure(foreground="#000000")
+                self.Label2.configure(highlightbackground="#d9d9d9")
+                self.Label2.configure(highlightcolor="black")
+                self.Label2.configure(text=record[0]) #username
+
+                self.Label3 = tk.Label(self.Fra_sRes)
+                self.Label3.place(relx=0.409, rely=0.202, height=21, width=41)
+                self.Label3.configure(activebackground="#f9f9f9")
+                self.Label3.configure(activeforeground="black")
+                self.Label3.configure(background="#d9d9d9")
+                self.Label3.configure(disabledforeground="#a3a3a3")
+                self.Label3.configure(font="-family {Arial} -size 12")
+                self.Label3.configure(foreground="#000000")
+                self.Label3.configure(highlightbackground="#d9d9d9")
+                self.Label3.configure(highlightcolor="black")
+                self.Label3.configure(text='''Post''')
+
+                self.Label6 = tk.Label(self.Fra_sRes)
+                self.Label6.place(relx=0.045, rely=0.33, height=23, width=112)
+                self.Label6.configure(activebackground="#f9f9f9")
+                self.Label6.configure(activeforeground="black")
+                self.Label6.configure(background="#d9d9d9")
+                self.Label6.configure(disabledforeground="#a3a3a3")
+                self.Label6.configure(font="-family {Arial Black} -size 9 -weight bold")
+                self.Label6.configure(foreground="#000000")
+                self.Label6.configure(highlightbackground="#d9d9d9")
+                self.Label6.configure(highlightcolor="black")
+                self.Label6.configure(text=record[1]) #fullname
+
+                self.Text1 = tk.Text(self.Fra_sRes)
+                self.Text1.place(relx=0.045, rely=0.404, relheight=0.154, relwidth=0.441)                
+                self.Text1.delete("1.0",tk.END)
+                self.Text1.insert(tk.END,record[3])
+                self.Text1.configure(state='disabled')
+
+                self.Text1.configure(background="white")
+                self.Text1.configure(font="TkTextFont")
+                self.Text1.configure(foreground="black")
+                self.Text1.configure(highlightbackground="#d9d9d9")
+                self.Text1.configure(highlightcolor="black")
+                self.Text1.configure(insertbackground="black")
+                self.Text1.configure(selectbackground="#c4c4c4")
+                self.Text1.configure(selectforeground="black")
+                self.Text1.configure(wrap="word")
+
+                self.Label7 = tk.Label(self.Fra_sRes)
+                self.Label7.place(relx=0.409, rely=0.147, height=21, width=48)
+                self.Label7.configure(activebackground="#f9f9f9")
+                self.Label7.configure(activeforeground="black")
+                self.Label7.configure(background="#d9d9d9")
+                self.Label7.configure(disabledforeground="#a3a3a3")
+                self.Label7.configure(font="-family {Segoe UI} -size 9 -weight bold")
+                self.Label7.configure(foreground="#000000")
+                self.Label7.configure(highlightbackground="#d9d9d9")
+                self.Label7.configure(highlightcolor="black")
+                self.Label7.configure(text=str(postno[0][1]))#postNO
+
+                self.Label3_1 = tk.Label(self.Fra_sRes)
+                self.Label3_1.place(relx=0.591, rely=0.202, height=21, width=71)
+                self.Label3_1.configure(activebackground="#f9f9f9")
+                self.Label3_1.configure(activeforeground="black")
+                self.Label3_1.configure(background="#d9d9d9")
+                self.Label3_1.configure(disabledforeground="#a3a3a3")
+                self.Label3_1.configure(font="-family {Arial} -size 12")
+                self.Label3_1.configure(foreground="#000000")
+                self.Label3_1.configure(highlightbackground="#d9d9d9")
+                self.Label3_1.configure(highlightcolor="black")
+                self.Label3_1.configure(text='''Follower''')
+
+                self.Label3_2 = tk.Label(self.Fra_sRes)
+                self.Label3_2.place(relx=0.818, rely=0.202, height=21, width=64)
+                self.Label3_2.configure(activebackground="#f9f9f9")
+                self.Label3_2.configure(activeforeground="black")
+                self.Label3_2.configure(background="#d9d9d9")
+                self.Label3_2.configure(disabledforeground="#a3a3a3")
+                self.Label3_2.configure(font="-family {Arial} -size 12")
+                self.Label3_2.configure(foreground="#000000")
+                self.Label3_2.configure(highlightbackground="#d9d9d9")
+                self.Label3_2.configure(highlightcolor="black")
+                self.Label3_2.configure(text='''Following''')
+
+
+                global dp
+                dp = ImageTk.PhotoImage(Image.open(record[2]).resize((120,80),Image.ANTIALIAS))
+                self.Button6 = tk.Button(self.Fra_sRes,image=dp)
+                self.Button6.place(relx=0.045, rely=0.11, height=90, width=125)
+                self.Button6.configure(activebackground="#ececec")
+                self.Button6.configure(activeforeground="#000000")
+                self.Button6.configure(background="#f0f0f0")
+                self.Button6.configure(borderwidth="0")
+                self.Button6.configure(disabledforeground="#a3a3a3")
+                self.Button6.configure(foreground="#000000")
+                self.Button6.configure(highlightbackground="#d9d9d9")
+                self.Button6.configure(highlightcolor="black")
+                self.Button6.configure(pady="0")
+                self.Button6.configure(text='''Dp''')
+
+                self.Button7 = tk.Button(self.Fra_sRes)
+                self.Button7.place(relx=0.591, rely=0.147, height=20, width=70)
+                self.Button7.configure(activebackground="#ececec")
+                self.Button7.configure(activeforeground="#000000")
+                self.Button7.configure(background="#d9d9d9")
+                self.Button7.configure(borderwidth="0")
+                self.Button7.configure(disabledforeground="#a3a3a3")
+                self.Button7.configure(font="-family {Segoe UI} -size 9 -weight bold")
+                self.Button7.configure(foreground="#000000")
+                self.Button7.configure(highlightbackground="#d9d9d9")
+                self.Button7.configure(highlightcolor="black")
+                self.Button7.configure(pady="0")
+                self.Button7.configure(text=folwerno[0])#followerNo
+
+                
+                self.Button8 = tk.Button(self.Fra_sRes)
+                self.Button8.place(relx=0.818, rely=0.147, height=21, width=67)
+                self.Button8.configure(activebackground="#ececec")
+                self.Button8.configure(activeforeground="#000000")
+                self.Button8.configure(background="#d9d9d9")
+                self.Button8.configure(borderwidth="0")
+                self.Button8.configure(disabledforeground="#a3a3a3")
+                self.Button8.configure(font="-family {Segoe UI} -size 9 -weight bold")
+                self.Button8.configure(foreground="#000000")
+                self.Button8.configure(highlightbackground="#d9d9d9")
+                self.Button8.configure(highlightcolor="black")
+                self.Button8.configure(pady="0")
+                self.Button8.configure(text=folwingno[0])#FollwngNO
+
+
+                font13 = "-family {Segoe UI} -size 13 -weight bold -slant "  \
+                            "roman -underline 0 -overstrike 0"
+                self.Button9 = tk.Button(self.Fra_sRes,command= lambda: self.followbt(userz))
+                self.Button9.place(relx=0.045, rely=0.587, height=34, width=387)
+                self.Button9.configure(activebackground="#ececec")
+                self.Button9.configure(activeforeground="#000000")
+                self.Button9.configure(background="#d9d9d9")
+                self.Button9.configure(borderwidth="0")
+                self.Button9.configure(disabledforeground="#a3a3a3")
+                self.Button9.configure(font=font13)
+                self.Button9.configure(foreground="#1892da")
+                self.Button9.configure(highlightbackground="#d9d9d9")
+                self.Button9.configure(highlightcolor="black")
+                self.Button9.configure(pady="0")
+                self.Button9.configure(text='''Follow''')
+
+                self.Frame_s = tk.Frame(self.Fra_sRes)
+                self.Frame_s.place(relx=0.011, rely=0.679, relheight=0.299
+                        , relwidth=0.977)
+                
+                self.Canvas1 = tk.Canvas(self.Frame_s)
+                self.Canvas1.place(relx=0.0, rely=0.0, relheight=1.0
+                        , relwidth=1.0)
+                self.Canvas1.configure(background="#d9d9d9")
+                self.Canvas1.configure(borderwidth="2")
+                self.Canvas1.configure(highlightbackground="#d9d9d9")
+                self.Canvas1.configure(highlightcolor="black")
+                self.Canvas1.configure(insertbackground="black")
+                self.Canvas1.configure(relief="ridge")
+                self.Canvas1.configure(selectbackground="#c4c4c4")
+                self.Canvas1.configure(selectforeground="black")
+
+                self.scrollbar=tk.Scrollbar(self.Frame_s,orient="vertical",command=self.Canvas1.yview)
+                self.Canvas1.configure(yscrollcommand=self.scrollbar.set)
+                self.scrollbar.pack(side="right",fill="y")
+
+                self.Frame_1.destroy()
+                self.Frame_1 = tk.Frame(self.Canvas1)# combine this to scrol
+                self.Frame_1.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
+                self.Frame_1.configure(relief="groove")
+                self.Frame_1.configure(background="#d9d9d9")
+                self.Canvas1.create_window((0,0),window=self.Frame_1,anchor='nw')
+                self.Frame_1.bind("<Configure>",lambda event: self.Canvas1.configure(scrollregion=self.Canvas3.bbox("all")))
+
+        
+                global _img_f         
+                _img_f = imgsurl
+                if _img_f == []:
+                    
+                    _img_f = ImageTk.PhotoImage(Image.open('nopost.jpg').resize((370,120),Image.ANTIALIAS))
+                    tk.Button(self.Frame_1,image=_img_f,background="#eeeeee",
+                            borderwidth="0").grid(row=0,column=0,padx=10, pady=10)
+                else:
+                    global imgcr
+                    imgcr=[]
+                    l=i=j=0
+                    
+                    for img in _img_f:
+                        
+                        imgcr.append(ImageTk.PhotoImage(Image.open(img[1]).resize((110,100),Image.ANTIALIAS)))
+                        tk.Button(self.Frame_1,image=imgcr[l],background="#eeeeee",
+                            command=lambda pic_id = img[0]: self.popup_dis(pic_id),
+                            borderwidth="0").grid(row=j,column=i,padx=10, pady=10)
+                        l+=1
+                        if(i<2):
+                            i+=1
+                        else:
+                            i=0
+                            j+=1    
+
+
+
+                #messagebox.showinfo("info"," found ")
+            
+            else:
+                messagebox.showerror("Error", "NO user by %s"%(userz))
+        elif(userz == useridgol):
+                messagebox.showwarning("warning", "you cant search your owm")
+        else:
+            messagebox.showwarning("warning", "Pls enter the field" )
+
+    def followbt(self,userz):
+        res = dbvalidate.followingotp(useridgol,userz)
+        #print(res)
+        self.Button7.configure(text=res[0])
+     
         
 
 class uploadz(tk.Frame):
