@@ -913,6 +913,55 @@ class profileinfo(tk.Frame):
         self.Canvas1.create_window((0,0),window=self.Frame_1,anchor='nw')
         self.Frame_1.bind("<Configure>",lambda event: self.Canvas1.configure(scrollregion=self.Canvas1.bbox("all")))
 
+        font10 = "-family Arial -size 20 -weight bold -slant roman "  \
+                   "-underline 0 -overstrike 0"
+        self.Label5 = tk.Label(self)
+        self.Label5.place(relx=0.844, rely=0.037, height=41, width=44)
+        self.Label5.configure(background="#eeeeee")
+        self.Label5.configure(disabledforeground="#a3a3a3")
+        self.Label5.configure(font=font10)
+        self.Label5.configure(foreground="#000000")
+        self.Label5.configure(text=''':''')
+
+        self.Frame_l = tk.Frame(self)
+
+        self.Label5.bind("<Button-3>", self.open_logout)
+        self.Label5.bind("<Motion>", self.disable_log)
+        self.Frame_l.bind("<Motion>",self.disable_log2)
+
+        self.Frame_l.configure(relief='groove')
+        self.Frame_l.configure(borderwidth="2")
+        self.Frame_l.configure(relief="groove")
+        self.Frame_l.configure(background="#d9d9d9")
+        
+        font12 = "-family Arial -size 11 -weight bold -slant roman "  \
+               "-underline 0 -overstrike 0"
+
+        self.Button11 = tk.Button(self.Frame_l,command = self.out_out)
+        self.Button11.place(relx=0.118, rely=0.125, height=30, width=67)
+        self.Button11.configure(activebackground="#ececec")
+        self.Button11.configure(activeforeground="#000000")
+        self.Button11.configure(background="#d9d9d9")
+        self.Button11.configure(borderwidth="0")
+        self.Button11.configure(disabledforeground="#a3a3a3")
+        self.Button11.configure(font=font12)
+        self.Button11.configure(foreground="#000000")
+        self.Button11.configure(highlightbackground="#d9d9d9")
+        self.Button11.configure(highlightcolor="black")
+        self.Button11.configure(pady="0")
+        self.Button11.configure(text='''Log Out''')
+
+        
+        self.Button_destroy = tk.Button(self.Frame_l,command = self.deactivate)
+        self.Button_destroy.place(relx=0.118, rely=0.550, height=25, width=67)
+        self.Button_destroy.configure(activebackground="#ececec")
+        self.Button_destroy.configure(background="#d9d9d9")
+        self.Button_destroy.configure(borderwidth="0")
+        self.Button_destroy.configure(borderwidth="0")
+        self.Button_destroy.configure(foreground="red")
+        self.Button_destroy.configure(font="-family Arial -size 8 -weight bold -slant roman ")
+        self.Button_destroy.configure(text='Deactivate')
+
         self.setvalue()
     
     def setvalue(self):
@@ -957,8 +1006,41 @@ class profileinfo(tk.Frame):
                 else:
                     i=0
                     j+=1   
-           
+
+    def out_out(self):
+        root.destroy()
+        login.start_gui()
+    
+    def open_logout(self,event):
+        try:
+            self.Frame_l.place(relx=0.778, rely=0.118, relheight=0.190, relwidth=0.200)
+            self.Frame_l.focus_set()
+        except:
+            pass
+
+    def close_log(self,event):
+        try:
+            self.Frame_l.place_forget()
+            self.Label5.unbind_all("<Button-1>")
+        except:
+            pass
+    
+    def disable_log(self,event):
+        self.Label5.bind_all("<Button-1>",self.close_log)
+
+   
+    def disable_log2(self,event):
+        self.Label5.unbind_all("<Button-1>")
+
+    def deactivate(self):
+        res = messagebox.askquestion("Deactivate", "Are You Sure?", icon='warning')
+        if res == 'yes':
+            print("Deleted")
+            root.destroy()
+            dbvalidate.deactivateuser(useridgol)
+            login.start_gui()      
 
 
 if __name__ == '__main__':
-    start_gui("akshaykumar")
+    pass
+    #start_gui("akshaykumar")
