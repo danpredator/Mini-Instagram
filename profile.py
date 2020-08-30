@@ -653,7 +653,7 @@ class uploadz(tk.Frame):
         self.Label1.configure(foreground="#000000")
         self.Label1.configure(text='''Caption''')
 
-        self.Button2 = tk.Button(self,command="")
+        self.Button2 = tk.Button(self,command=self.uploaddb)
         self.Button2.place(relx=0.372, rely=0.617, height=44, width=87)
         self.Button2.configure(activebackground="#ececec")
         self.Button2.configure(activeforeground="#000000")
@@ -672,6 +672,15 @@ class uploadz(tk.Frame):
         global dis_up
         dis_up = ImageTk.PhotoImage(Image.open(self.pic_url).resize((140,120),Image.ANTIALIAS))
         self.Button1.configure(image=dis_up)
+    
+    def uploaddb(self):
+        capt = self.capt.get() 
+        if ( self.pic_url is not None and len(capt)!=0):
+            if(dbvalidate.uploadpic(useridgol,self.pic_url,capt)):
+                messagebox.showinfo("info"," your pic in uploaded")
+
+        else:
+            messagebox.showwarning("warning", "Pls enter all fields" )
 
 
 class heart(tk.Frame):
@@ -705,9 +714,14 @@ class heart(tk.Frame):
         self.Frame_1.bind("<Configure>",lambda event: self.Canvas3.configure(scrollregion=self.Canvas3.bbox("all")))
 
         
-        for i in range(50):
-           tk.Label(self.Frame_1,text=i).grid(row=i,column=0)
-           tk.Label(self.Frame_1,text="helloot"+str(i)).grid(row=i,column=1)
+        font14 = "-family {Kristen ITC} -size 15 -weight normal -slant"  \
+              " roman -underline 0 -overstrike 0"
+        likerinfo = dbvalidate.getliker(useridgol)
+        i=0
+        for value in likerinfo:
+            tk.Button(self.Frame_1, text= "%s liked your photo (%s)"%(value[0],value[1]),font=font14,height=3,width=35,
+                anchor="w",borderwidth="0",foreground="#d11b60").grid(row=i,column=0)
+            i+=1
 
 
 
