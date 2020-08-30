@@ -14,7 +14,7 @@ def logvalidate(username,password):
 
         cursor = conn.cursor()
         #print(username,password)
-        msql = ("SELECT user_id,pass FROM USERS where user_id=%s")
+        msql = ("SELECT user_id,pass FROM USERS where user_id = %s")
 
         cursor.execute(msql,(username,))
         
@@ -37,9 +37,9 @@ def newsignup(user_id,passz,fullname,dp_url,bio):
                                          password=passwordu)
 
         cursor = conn.cursor()
-        sql = ("SELECT user_id FROM USERS where user_id='%s'")
+        sql = ("SELECT user_id FROM USERS where user_id = %s")
 
-        cursor.execute(sql,user_id)
+        cursor.execute(sql,(user_id,))
         if(cursor.fetchone() is None):
             sql = ("INSERT INTO users VALUES(%s,%s,%s,%s,%s)")
             cursor.execute(sql,(user_id,passz,fullname,dp_url,bio))
@@ -336,4 +336,5 @@ def deactivateuser(user_id):
 if __name__ == "__main__":
     pass
     #print(profile("akshaykumar"))
+    #print(newsignup("nidhi",'a','s','','d'))
     

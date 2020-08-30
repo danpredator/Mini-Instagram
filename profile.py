@@ -865,17 +865,7 @@ class profileinfo(tk.Frame):
         self.Label3_2.configure(highlightcolor="black")
         self.Label3_2.configure(text='''Following''')
 
-        self.Label4 = tk.Label(self)
-        self.Label4.place(relx=0.044, rely=0.661, height=41, width=404)
-        self.Label4.configure(activebackground="#f9f9f9")
-        self.Label4.configure(activeforeground="black")
-        self.Label4.configure(background="#eeeeee")
-        self.Label4.configure(disabledforeground="#a3a3a3")
-        self.Label4.configure(foreground="#000000")
-        self.Label4.configure(highlightbackground="#d9d9d9")
-        self.Label4.configure(highlightcolor="black")
-        self.Label4.configure(text='''image of feeds''')
-
+        
         self.Button9 = tk.Button(self)
         self.Button9.place(relx=0.044, rely=0.587, height=34, width=387)
         self.Button9.configure(activebackground="#ececec")
@@ -891,7 +881,7 @@ class profileinfo(tk.Frame):
         self.Button9.configure(text='''Edit Profile''')
 
         self.Frame_s = tk.Frame(self) #add scroll to scr_lcan
-        self.Frame_s.place(relx=0.022, rely=0.752, relheight=0.226, relwidth=0.962)
+        self.Frame_s.place(relx=0.022, rely=0.670, relheight=0.316, relwidth=0.962)
 
         self.Canvas1 = tk.Canvas(self.Frame_s)
         self.Canvas1.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)

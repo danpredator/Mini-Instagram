@@ -4,6 +4,8 @@ import tkinter.ttk as ttk
 from tkinter import messagebox
 from tkinter import filedialog
 import profile
+import dbvalidate
+
 def start_gui():
     
     global root
@@ -158,8 +160,15 @@ class toplevel:
         global user_id,passz
         user_id = self.username.get()
         passz = self.password.get()
-        
-        print(user_id,passz)
+        recod = dbvalidate.logvalidate(user_id,passz)
+        if recod is None:
+            messagebox.showwarning("warning", "No Username exists %s name"%(user_id) )
+        else:
+            if(passz==recod[1]):
+                root.destroy()
+                profile.start_gui(user_id)
+            else:
+                messagebox.showwarning("warning", " Wrong password ")
 
     def signup(self):
         self.Lframe.destroy()
@@ -315,16 +324,24 @@ class toplevel:
 
     def signup_action(self):
         global user_id,passz,fname,dp_url,bio
-
+        dp_url = None
         user_id = self.username.get()
         passz = self.password.get()
         fname = self.fname.get()
         if(self.dp_url is not None):
             dp_url = self.dp_url
         bio = self.Text1.get("1.0",tk.END)
-        dp_url=""
-        print(user_id,passz,fname,dp_url,bio)
-
+        
+        if(len(user_id)==0 and len(passz)==0):
+            messagebox.showwarning("warning", "Pls enter Username and password" )
+        elif(len(fname)!=0 and len(bio)!=0 and dp_url is not None):
+            if(dbvalidate.newsignup(user_id,passz,fname,dp_url,bio)):
+                root.destroy()
+                profile.start_gui(user_id)
+            else:
+                messagebox.showwarning("warning", "this Username already exists" )
+        else:
+            messagebox.showwarning("warning", "Pls enter all fields" )
         
         
         
