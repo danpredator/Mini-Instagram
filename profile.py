@@ -20,12 +20,6 @@ def start_gui(user_id):
 class Toplevel1:
     def __init__(self, top=None):
         
-        _bgcolor = '#d9d9d9'  # X11 color: 'gray85'
-        _fgcolor = '#000000'  # X11 color: 'black'
-        _compcolor = '#d9d9d9' # X11 color: 'gray85'
-        _ana1color = '#d9d9d9' # X11 color: 'gray85'
-        _ana2color = '#ececec' # Closest X11 color: 'gray92'
-
         top.geometry("455x595+392+35")
         top.minsize(120, 1)
         top.maxsize(1370, 749)
@@ -36,22 +30,13 @@ class Toplevel1:
         top.configure(highlightcolor="#46edfb")
         top.configure(highlightthickness="1")
         
-        # top.configure(background="IndianRed2")#d9d9d9")
-        # top.configure(highlightbackground="#d9d9d9")
-        # top.configure(highlightcolor="black")
-        
         self.Framet = tk.Frame(top)
         self.Framet.place(relx=0.011, rely=0.008, relheight=0.983, relwidth=0.978)
-        #self.Framet.place(relx=0.022, rely=0.016, relheight=0.959, relwidth=0.957)
         self.Framet.configure(relief='groove')
         self.Framet.configure(borderwidth="2")
         self.Framet.configure(relief="groove")
         self.Framet.configure(background="#c3c3c3")
-        #self.Framet.configure(highlightbackground="#ff4848")
-        #self.Framet.configure(highlightcolor="#ff4848")
-        #self.Framet.configure(highlightthickness="1")
-
-
+        
         self.container = tk.Frame(self.Framet)
         self.container.place(relx=0.0, rely=0.0, relheight=0.908, relwidth=1.0)
         self.container.configure(borderwidth="2")
@@ -81,12 +66,11 @@ class Toplevel1:
         self.Button1.configure(highlightcolor="black")
         self.Button1.configure(pady="0")
         self.Button1.configure(text='''Home''')
-        #photo_location = os.path.join(prog_location,"./home.png")
+        
         global _img1         
         _img1 = ImageTk.PhotoImage(Image.open('home.png').resize((50,50),Image.ANTIALIAS))
         self.Button1.configure(image=_img1)
-        #self.Button1.configure(image= ImageTk.PhotoImage(Image.open('home.png')))
-
+        
         self.Button2 = tk.Button(self.Frame1,command=lambda: self.show_frame("search"))
         self.Button2.place(relx=0.222, rely=0.154, height=37, width=47)
         self.Button2.configure(activebackground="#ececec")
@@ -152,7 +136,7 @@ class Toplevel1:
             page_name = F.__name__
             frame = F.__new__(F)
             self.frames[page_name] = frame
-            #frame.grid(row=0, column=0, sticky="nsew")
+            
 
         self.show_frame("profileinfo")
 
@@ -160,30 +144,17 @@ class Toplevel1:
         #swap btw the frames
         frame = self.frames[page_name]
         frame.__init__(parent=self.container, controller=self)
-        # clsx = frame.__class__
-        # modname = clsx.__name__
-        # del sys.modules[modname]
-        # module = __import__(modname)
-        # frame.__class__ = getattr(module,clsx.__name__)
+        
                        
         frame.tkraise()
 
 class Newsfeed(tk.Frame):
     def __init__(self,parent,controller):
         tk.Frame.__init__(self,parent)
-        font9 = "-family {Segoe UI} -size 11 -weight bold -slant roman "  \
-            "-underline 0 -overstrike 0"
-
-        
+                
         self.controller =controller
         self.place(relx=0.0, rely=0.0, relheight=1.0, relwidth=1.0)
-        #self.configure(relief='groove')
-        #self.configure(borderwidth="2")
-        #self.configure(relief="groove")
-        #self.configure(background="#d9d9d9")
-        #self.configure(highlightbackground="#d9d9d9")
-        #self.configure(highlightcolor="black")
-
+        
         self.Label1 = tk.Label(self)
         self.Label1.place(relx=0.0, rely=0.0, height=121, width=450)
         self.Label1.configure(activebackground="#f9f9f9")
@@ -202,7 +173,6 @@ class Newsfeed(tk.Frame):
         self.Frame_s = tk.Frame(self) #add scroll to scr_can
         self.Frame_s.place(relx=0.0, rely=0.22, relheight=0.78, relwidth=1.0)
         self.Frame_s.configure(relief='groove')
-        #self.scrl_can.configure(borderwidth="2")
         self.Frame_s.configure(relief="groove")
         self.Frame_s.configure(background="#d9d9d9")
 
@@ -224,7 +194,7 @@ class Newsfeed(tk.Frame):
         self.Frame_1.bind("<Configure>",lambda event: self.scrl_can.configure(scrollregion=self.scrl_can.bbox("all")))
 
         imgsurl = dbvalidate.newsfeed(useridgol)
-        #print(imgsurl)
+        
         global _img         
         _img = imgsurl
         if _img == []:
@@ -235,9 +205,9 @@ class Newsfeed(tk.Frame):
             global imgcr
             imgcr=[]
             i=0
-            #print("1",_img)            
+            
             for img in _img:
-                #print("2",img)
+                
                 imgcr.append(ImageTk.PhotoImage(Image.open(img[1]).resize((400,300),Image.ANTIALIAS)))
                 bt = tk.Button(self.Frame_1,image=imgcr[i],background="#eeeeee",
                         borderwidth="0")
@@ -336,9 +306,9 @@ class search(tk.Frame):
             global imgcr
             imgcr=[]
             j=l=i=0
-            #print("1",_img)            
+            
             for img in _img_se:
-                #print("2",img)resize((110,120),Image.ANTIALIAS)
+                
                 imgcr.append(ImageTk.PhotoImage(Image.open(img[1]).resize((110,120),Image.ANTIALIAS)))
                 bt = tk.Button(self.Frame_1,image=imgcr[l],background="#eeeeee",
                         borderwidth="0")
@@ -599,7 +569,7 @@ class search(tk.Frame):
 
 
 
-                #messagebox.showinfo("info"," found ")
+                
             
             else:
                 messagebox.showerror("Error", "NO user by %s"%(userz))
@@ -610,7 +580,7 @@ class search(tk.Frame):
 
     def followbt(self,userz):
         res = dbvalidate.followingotp(useridgol,userz)
-        #print(res)
+        
         self.Button7.configure(text=res[0])
      
         
@@ -1033,4 +1003,4 @@ class profileinfo(tk.Frame):
 
 if __name__ == '__main__':
     pass
-    #start_gui("akshaykumar")
+    

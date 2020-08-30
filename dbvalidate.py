@@ -13,14 +13,14 @@ def logvalidate(username,password):
                                          password=passwordu)
 
         cursor = conn.cursor()
-        #print(username,password)
+        
         msql = ("SELECT user_id,pass FROM USERS where user_id = %s")
 
         cursor.execute(msql,(username,))
         
         return cursor.fetchone()
 
-        #print("You're connected to database: ", record)
+        
         
     except Error as e:
         print("Error while connecting to MySQL", e)
@@ -48,7 +48,7 @@ def newsignup(user_id,passz,fullname,dp_url,bio):
 
         return False
 
-        #print("You're connected to database: ", record)
+        
         
     except Error as e:
         print("Error while connecting to MySQL", e)
@@ -81,7 +81,7 @@ def profile(user_id):
         r4 = cursor.fetchall()
         cursor.execute(sql5,(user_id,))
         r5 = cursor.fetchall()
-        #print(r4)
+        
         return r1,r2,r3,r4,r5
 
     except Error as e:
@@ -158,12 +158,11 @@ def followingotp(user_id,following_id):
         
         cursor.execute(sql3,(following_id,))
         r1 = cursor.fetchone()
-        # cursor.execute(sql4,(user_id,))
-        # r2 = cursor.fetchone()
+        
         return r1
 
     except Error as e:
-        #print("Error while connecting to MySQL1", str(e))
+        
         
         try:
 
@@ -245,7 +244,7 @@ def captlike(user_id,pic_id,flag=False):
             return r1,r2,r3
 
     except Error as e:
-        #print("Error while connecting to MySQL", e)
+        
         if('Duplicate entry' in str(e)):
             
             sql1 = ("delete from likes where photo_id = %s and liker_id = %s ;")
@@ -257,7 +256,7 @@ def captlike(user_id,pic_id,flag=False):
         
             return cursor.fetchone()
             
-        #print("Error while connecting to MySQL", e)
+        
     finally:
         if (conn.is_connected()):
             cursor.close()
@@ -335,6 +334,5 @@ def deactivateuser(user_id):
 
 if __name__ == "__main__":
     pass
-    #print(profile("akshaykumar"))
-    #print(newsignup("nidhi",'a','s','','d'))
+    
     
