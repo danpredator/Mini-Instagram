@@ -1,0 +1,193 @@
+create database insta
+use insta
+show tables
+
+create table users(
+user_id varchar(10) ,
+pass varchar(10) not null,
+fullname varchar(20) not null,
+dp_url varchar(50),
+bio varchar(100),
+constraint pk1 primary key(user_id)
+)
+
+alter table users change column dp_url dp_url varchar(100)
+#drop table follower
+alter table users change column user_id user_id varchar(20)
+ create table followers(
+    user_id varchar(10),
+    follower_id varchar(10),
+    constraint spk1 primary key(user_id, follower_id),
+    constraint ck check(user_id != follower_id),
+     constraint fk1 foreign key(user_id) references users(user_id),
+     constraint fk2 foreign key(follower_id) references users(user_id)
+     );
+
+alter table followers change column user_id user_id varchar(20);
+ create table following(
+    user_id varchar(10),
+    following_id varchar(10),
+    constraint spk2 primary key(user_id, following_id),
+    constraint ck2 check(user_id != following_id),
+     constraint fk3 foreign key(user_id) references users(user_id),
+     constraint fk4 foreign key(following_id) references users(user_id)
+     );
+alter table following change column user_id user_id varchar(20)  ; 
+
+create table photos(
+photo_id int UNSIGNED NOT NULL AUTO_INCREMENT Primary key,
+image_url varchar(100),
+cation varchar(30)
+);
+ALTER TABLE `insta`.`photos` 
+CHANGE COLUMN `cation` `caption` VARCHAR(30) NULL DEFAULT NULL ;
+
+alter 
+insert into photos 
+delete from users;
+select * from users;
+
+#alter table photos modify column photo_id photo_id int UNSIGNED NOT NULL AUTO_INCREMENT 
+
+#alter table photos add constraint pk2 primary key(photo_id);
+
+ create table photo_of(
+    user_id varchar(20),
+    photo_id int unsigned,
+    constraint spk3 primary key(user_id, photo_id),
+     constraint fk5 foreign key(user_id) references users(user_id),
+     constraint fk6 foreign key(photo_id) references photos(photo_id)
+     );
+
+create table likes(
+ photo_id int unsigned,
+liker_id varchar(20),
+constraint spk4 primary key(photo_id,liker_id),
+constraint fk7 foreign key(photo_id) references photos(photo_id),
+constraint fk8 foreign key(liker_id) references users(user_id)
+);
+
+delimiter //
+CREATE PROCEDURE storefor_p(userid varchar(20))
+BEGIN
+	insert into photo_of
+    (user_id, photo_id)
+    select user_id,max(photo_id) FROM users join photos where user_id = userid;
+END //
+delimiter ;
+call storefor_p("hoii")
+#insert into photos(image_url,cation) values("cc",'jj');
+#select * from photos;
+#select * from photo_of;
+#drop procedure storefor_p
+#al
+delete from photos where photo_id = 5;
+
+#not activate
+delimiter //
+CREATE PROCEDURE rest_incre()
+BEGIN
+	alter table photos AUTO_INCREMENT =1;
+END //
+delimiter ;
+delimiter //
+#not activate
+create trigger rest_autoincre after delete on photos
+for each row
+begin
+	if not exists ( select * from photos) then
+		call rest_incre();
+	end if;
+end //
+delimiter ;
+#drop trigger rest_incre
+#drop procedure rest_incre
+
+SELECT user_id,pass FROM USERS where user_id = 'jdj';
+select count(*) from followers where user_id = 'hoi';
+select count(*) from following where user_id = 'hoi';
+SELECT user_id,fullname,dp_url,bio FROM USERS where user_id='hoii';
+select photo_id,image_url from photos natural join photo_of where user_id = 'hoii';
+
+select user_id, count(*) from photo_of group by user_id having user_id = "hoii";
+
+
+delimiter //
+CREATE PROCEDURE followerupdate(userid varchar(20),followerid varchar(20))
+BEGIN
+	insert into followers(user_id, follower_id) values(userid,followerid);
+END //
+delimiter ;
+call followerupdate("hoii",'ramzzz');#ramzz is follwng hoii
+-- select * from followers;
+-- select * from following;
+-- delete from followers;
+-- delete from following;
+delete from following where user_id = 'hoii' and following_id = 'ramzzz';
+
+delete from followers where user_id = 'hoii' and follower_id = 'ramzzz';
+delimiter //
+CREATE PROCEDURE followerdelete(userid varchar(20),followerid varchar(20))
+BEGIN
+	delete from followers where user_id = userid and follower_id = followerid;
+END //
+delimiter ;
+#drop procedure followerdelete;
+call followerdelete('hoii','ramzz'); #remv ramzz following hoii 
+
+select * from photos;
+
+select photo_id,image_url
+from photos natural join photo_of
+where user_id in ( select following_id
+from following
+where user_id = 'bvc rocker'
+);
+select count(*) from likes where photo_id = 10;
+select caption from photos where photo_id = 10;
+select user_id from photo_of where photo_id=10;
+select * from likes;
+select user_id from photo_of where photo_id = 10;
+delete from likes where photo_id = 11 and liker_id = 'bvc rocker';
+
+select count(*) from likes where photo_id = 11;
+
+select user_id,fullname,photo_id,liker_id from users natural join photo_of natural join likes;
+-- right(image_url, char_length(image_url) - substring('/' , image_url))
+
+select fullname,substring_index(image_url , '/' , -1) as  imgg 
+from (users join likes on user_id = liker_id) natural join photos
+ where photo_id in 
+( select photo_id from
+photos natural join photo_of
+where user_id = 'hoii'
+);
+
+select count(*) from photos;
+
+ALTER TABLE `insta`.`followers` 
+DROP FOREIGN KEY `fk1`,
+DROP FOREIGN KEY `fk2`;
+ALTER TABLE `insta`.`followers` 
+ADD CONSTRAINT `fk1`
+  FOREIGN KEY (`user_id`)
+  REFERENCES `insta`.`users` (`user_id`)
+  ON DELETE CASCADE,
+ADD CONSTRAINT `fk2`
+  FOREIGN KEY (`follower_id`)
+  REFERENCES `insta`.`users` (`user_id`)
+  ON DELETE CASCADE;
+select * from users;
+#delete from users;
+select * from photos;
+select * from photo_of;
+select * from likes;
+select * from followers;
+select * from following;
+delete from photos;
+
+#alter table following drop check ck2;
+#alter table following drop foreign key f4;
+#not there
+#alter table followers add constraint ck1 check(user_id != follower_id);
+#(user_id != following_id) 
